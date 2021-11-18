@@ -23,8 +23,26 @@ async function run() {
         const productsCollection = database.collection("products");
         // create a document to insert
 
+        // Geting  Data from The Server
+        app.get('/products', async (req, res) => {
+            const result = await productsCollection.find({}).toArray();
+            console.log(result);
+            res.send(result)
+        })
+
+
+
+
+
+
+
+
+
+
+
+
     } finally {
-        await client.close();
+        // await client.close();
     }
 }
 run().catch(console.dir);
