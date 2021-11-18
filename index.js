@@ -26,7 +26,6 @@ async function run() {
         // Geting  Data from The Server
         app.get('/products', async (req, res) => {
             const result = await productsCollection.find({}).toArray();
-            console.log(result);
             res.send(result)
         })
 
