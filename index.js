@@ -22,6 +22,7 @@ async function run() {
         const database = client.db("Repiring-shop");
         const productsCollection = database.collection("products");
         const usersCollection = database.collection("users");
+        const addedProductCollection = database.collection('addedProducts')
         // create a document to insert
 
         // Geting  Data from The Server
@@ -59,7 +60,22 @@ async function run() {
 
         })
 
-
+        // Added New Products
+        app.post('/doctors', async (req, res) => {
+            const name = req.body.name;
+            const discription = req.body.discription;
+            const pic = req.files.image;
+            const picData = pic.data;
+            const encodedPic = picData.toString('base64');
+            const imageBuffer = Buffer.from(encodedPic, 'base64');
+            const product = {
+                name,
+                discription,
+                image: imageBuffer
+            }
+            const result = await addedProductCollection.insertOne(product);
+            res.json(result);
+        })
 
 
 
