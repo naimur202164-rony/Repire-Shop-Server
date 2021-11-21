@@ -22,7 +22,8 @@ async function run() {
         const database = client.db("Repiring-shop");
         const productsCollection = database.collection("products");
         const usersCollection = database.collection("users");
-        const addedProductCollection = database.collection('addedProducts')
+        const addedProductCollection = database.collection('addedProducts');
+        const userProductsCollection = database.collection('userProducts')
         // create a document to insert
 
         // Geting  Data from The Server
@@ -58,10 +59,33 @@ async function run() {
             res.json(result);
 
 
+        });
+        // Adding products from Single Page
+        app.post('/userProducts', async (req, res) => {
+            const products = req.body;
+            const result = await userProductsCollection.insertOne(products);
+            res.send(result)
+        });
+        // Getin Products By Email Id
+        app.get('/userProducts', async (req, res) => {
+            const email = req.query.email;
+            const query = { email: email }
+            const cursor = userProductsCollection.find(query);
+            const productOrderd = await cursor.toArray();
+            res.send(productOrderd)
+        });
+        // Delet items dynamics
+        app.delete("/deleteProduct/:id", async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: id };
+            const result = await userProductsCollection.deleteOne(query);
+            res.send(result)
+            console.log(result);
+
         })
 
         // Added New Products
-        app.post('/doctors', async (req, res) => {
+        app.post('/addProducts', async (req, res) => {
             const name = req.body.name;
             const discription = req.body.discription;
             const pic = req.files.image;
