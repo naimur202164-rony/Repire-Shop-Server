@@ -21,6 +21,7 @@ async function run() {
         await client.connect();
         const database = client.db("Repiring-shop");
         const productsCollection = database.collection("products");
+        const usersCollection = database.collection("users");
         // create a document to insert
 
         // Geting  Data from The Server
@@ -29,10 +30,22 @@ async function run() {
             res.send(result)
         })
 
+        // Sending Data to the USers
+        app.post('/users', async (req, res) => {
+            const user = req.body;
+            const result = await usersCollection.insertOne(user);
+            res.send(result)
+        })
 
-
-
-
+        // Google Sign Upsert Method
+        app.put('/users', async (req, res) => {
+            const user = req.body;
+            const filter = { email: user.email };
+            const options = { upsert: true };
+            const updateDoc = { $set: user };
+            const result = await usersCollection.updateOne(filter, updateDoc, options);
+            res.json(result);
+        });
 
 
 
