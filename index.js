@@ -67,12 +67,13 @@ async function run() {
             res.send(result)
         });
         // Getin Products By Email Id
-        app.get('/userProducts', async (req, res) => {
+        app.get('/userProduct', async (req, res) => {
             const email = req.query.email;
             const query = { email: email }
             const cursor = userProductsCollection.find(query);
             const productOrderd = await cursor.toArray();
-            res.send(productOrderd)
+            res.send(productOrderd);
+            console.log(productOrderd)
         });
         // Delet items dynamics
         app.delete("/deleteProduct/:id", async (req, res) => {
